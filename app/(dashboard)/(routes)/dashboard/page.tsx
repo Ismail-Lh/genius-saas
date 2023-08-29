@@ -1,13 +1,5 @@
 import React from 'react';
-import { UserButton } from '@clerk/nextjs';
 
-const Dashboard = () => {
-  return (
-    <div>
-      <h1>dashboard page</h1>
-      <UserButton afterSignOutUrl="/" />
-    </div>
-  );
-};
-
-export default Dashboard;
+export default function DashboardPage() {
+  return <h1>dashboard page</h1>;
+}
