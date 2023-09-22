@@ -25,7 +25,7 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import UserAvatar from '@/components/user-avatar';
-import { amountOptions, formSchema } from './constants';
+import { amountOptions, formSchema, resolutionOptions } from './constants';
 
 function ImagePage() {
   const router = useRouter();
@@ -45,6 +45,7 @@ function ImagePage() {
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
       setImages([]);
+
       const response = await axios.post('/api/image', values);
 
       const imagesUrl = response.data.map(
@@ -82,7 +83,7 @@ function ImagePage() {
               <FormField
                 name="prompt"
                 render={({ field }) => (
-                  <FormItem className="col-span-12 lg:col-span-10">
+                  <FormItem className="col-span-12 lg:col-span-6">
                     <FormControl className="m-0 p-0">
                       <Input
                         className="border-0 outline-none focus-visible:ring-0 focus-visible:ring-transparent"
@@ -98,7 +99,7 @@ function ImagePage() {
                 control={form.control}
                 name="amount"
                 render={({ field }) => (
-                  <FormItem className="col-span-12 lg:col-span-10">
+                  <FormItem className="col-span-12 lg:col-span-2">
                     <Select
                       disabled={isLoading}
                       onValueChange={field.onChange}
@@ -113,6 +114,35 @@ function ImagePage() {
 
                       <SelectContent>
                         {amountOptions.map((option) => (
+                          <SelectItem key={option.value} value={option.value}>
+                            {' '}
+                            {option.label}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="resolution"
+                render={({ field }) => (
+                  <FormItem className="col-span-12 lg:col-span-2">
+                    <Select
+                      disabled={isLoading}
+                      onValueChange={field.onChange}
+                      value={field.value}
+                      defaultValue={field.value}
+                    >
+                      <FormControl>
+                        <SelectTrigger>
+                          <SelectValue defaultValue={field.value} />
+                        </SelectTrigger>
+                      </FormControl>
+
+                      <SelectContent>
+                        {resolutionOptions.map((option) => (
                           <SelectItem key={option.value} value={option.value}>
                             {' '}
                             {option.label}
