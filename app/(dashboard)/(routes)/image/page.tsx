@@ -4,13 +4,10 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { zodResolver } from '@hookform/resolvers/zod';
 import axios from 'axios';
-import { ImageIcon, MessageSquare } from 'lucide-react';
-import { ChatCompletionRequestMessage } from 'openai';
+import { ImageIcon } from 'lucide-react';
 import { useForm } from 'react-hook-form';
 import * as z from 'zod';
 
-import { cn } from '@/lib/utils';
-import BotAvatar from '@/components/bot-avatar';
 import Empty from '@/components/empty';
 import Heading from '@/components/heading';
 import Loader from '@/components/loader';
@@ -24,7 +21,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-import UserAvatar from '@/components/user-avatar';
 import { amountOptions, formSchema, resolutionOptions } from './constants';
 
 function ImagePage() {
