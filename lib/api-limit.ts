@@ -3,17 +3,11 @@ import { auth } from '@clerk/nextjs';
 
 import prismadb from './prismadb';
 
-const checkUser = () => {
+export const increaseApiLimit = async () => {
   const { userId } = auth();
 
-  if (!userId) return;
+  if (!userId) return 0;
 
-  return userId;
-};
-
-const userId = checkUser() as string;
-
-export const increaseApiLimit = async () => {
   const userApiLimit = await prismadb.userApiLimit.findUnique({
     where: { userId },
   });
@@ -28,6 +22,10 @@ export const increaseApiLimit = async () => {
 };
 
 export const checkApiLimit = async () => {
+  const { userId } = auth();
+
+  if (!userId) return 0;
+
   const userApiLimit = await prismadb.userApiLimit.findUnique({
     where: { userId },
   });
@@ -35,4 +33,20 @@ export const checkApiLimit = async () => {
   if (!userApiLimit || userApiLimit.count < MAX_FREE_COUNTS) return true;
 
   return false;
+};
+
+export const getApiLimitCount = async () => {
+  const { userId } = auth();
+
+  if (!userId) return 0;
+
+  const userApiLimit = await prismadb.userApiLimit.findUnique({
+    where: {
+      userId,
+    },
+  });
+
+  if (!userApiLimit) return 0;
+
+  return userApiLimit.count;
 };
