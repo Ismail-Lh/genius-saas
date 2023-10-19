@@ -3,6 +3,8 @@ import { Figtree } from 'next/font/google';
 import './globals.css';
 import { ClerkProvider } from '@clerk/nextjs';
 
+import ModalProvider from '@/components/modal-provider';
+
 const font = Figtree({ subsets: ['latin'] });
 
 export const metadata = {
@@ -18,7 +20,10 @@ export default function RootLayout({
   return (
     <ClerkProvider>
       <html lang="en">
-        <body className={font.className}>{children}</body>
+        <body className={font.className}>
+          <ModalProvider />
+          {children}
+        </body>
       </html>
     </ClerkProvider>
   );
