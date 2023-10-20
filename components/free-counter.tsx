@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react';
 import { MAX_FREE_COUNTS } from '@/constants';
-import { useProModal } from '@/hooks/useProModal';
 import { Zap } from 'lucide-react';
 
+import { useProModal } from '@/hooks/useProModal';
 import { Button } from './ui/button';
 import { Card, CardContent } from './ui/card';
 import { Progress } from './ui/progress';
