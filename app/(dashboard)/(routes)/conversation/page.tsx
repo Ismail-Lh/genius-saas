@@ -10,6 +10,7 @@ import { useForm } from 'react-hook-form';
 import * as z from 'zod';
 
 import { cn } from '@/lib/utils';
+import { useProModal } from '@/hooks/useProModal';
 import BotAvatar from '@/components/bot-avatar';
 import Empty from '@/components/empty';
 import Heading from '@/components/heading';
@@ -23,6 +24,7 @@ import { formSchema } from './constants';
 function ConversationPage() {
   const router = useRouter();
   const [messages, setMessages] = useState<ChatCompletionRequestMessage[]>([]);
+  const proModal = useProModal();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -48,8 +50,9 @@ function ConversationPage() {
 
       form.reset();
     } catch (error: any) {
-      // TODO: open a PRO model
-      console.log(error);
+      if (error?.response?.status === 403) {
+        proModal.onOpen();
+      }
     } finally {
       router.refresh();
     }

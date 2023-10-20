@@ -9,6 +9,7 @@ import { ChatCompletionRequestMessage } from 'openai';
 import { useForm } from 'react-hook-form';
 import * as z from 'zod';
 
+import { useProModal } from '@/hooks/useProModal';
 import Empty from '@/components/empty';
 import Heading from '@/components/heading';
 import Loader from '@/components/loader';
@@ -20,6 +21,7 @@ import { formSchema } from './constants';
 function MusicPage() {
   const router = useRouter();
   const [music, setMusic] = useState<string>();
+  const proModal = useProModal();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -40,8 +42,9 @@ function MusicPage() {
 
       form.reset();
     } catch (error: any) {
-      // TODO: open a PRO model
-      console.log(error);
+      if (error?.response?.status === 403) {
+        proModal.onOpen();
+      }
     } finally {
       router.refresh();
     }

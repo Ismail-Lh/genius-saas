@@ -9,6 +9,7 @@ import { Download, ImageIcon } from 'lucide-react';
 import { useForm } from 'react-hook-form';
 import * as z from 'zod';
 
+import { useProModal } from '@/hooks/useProModal';
 import Empty from '@/components/empty';
 import Heading from '@/components/heading';
 import Loader from '@/components/loader';
@@ -28,6 +29,7 @@ import { amountOptions, formSchema, resolutionOptions } from './constants';
 function ImagePage() {
   const router = useRouter();
   const [images, setImages] = useState<string[]>([]);
+  const proModal = useProModal();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -54,7 +56,9 @@ function ImagePage() {
 
       form.reset();
     } catch (error: any) {
-      // TODO: open a PRO model
+      if (error?.response?.status === 403) {
+        proModal.onOpen();
+      }
       console.log(error);
     } finally {
       router.refresh();

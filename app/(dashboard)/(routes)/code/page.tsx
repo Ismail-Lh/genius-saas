@@ -11,6 +11,7 @@ import ReactMarkdown from 'react-markdown';
 import * as z from 'zod';
 
 import { cn } from '@/lib/utils';
+import { useProModal } from '@/hooks/useProModal';
 import BotAvatar from '@/components/bot-avatar';
 import Empty from '@/components/empty';
 import Heading from '@/components/heading';
@@ -24,7 +25,7 @@ import { formSchema } from './constants';
 function CodePage() {
   const router = useRouter();
   const [messages, setMessages] = useState<ChatCompletionRequestMessage[]>([]);
-
+  const proModal = useProModal();
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -49,7 +50,9 @@ function CodePage() {
 
       form.reset();
     } catch (error: any) {
-      // TODO: open a PRO model
+      if (error?.response?.status === 403) {
+        proModal.onOpen();
+      }
       console.log(error);
     } finally {
       router.refresh();
